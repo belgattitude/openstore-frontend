@@ -40,6 +40,15 @@ To run the app, follow these steps.
   ```shell
   gulp watch
   ```
+
+  If you run into the issue 'ENOSPC' with watch, 
+
+  ```shell
+  echo fs.inotify.max_user_watches=582222 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+  ```
+
+
+
 8. Browse to [http://localhost:9000](http://localhost:9000) to see the app. You can make changes in the code found under `src` and the browser should auto-refresh itself as you save files.
 
 > The Skeleton App uses [BrowserSync](http://www.browsersync.io/) for automated page refreshes on code/markup changes concurrently accross multiple browsers. If you prefer to disable the mirroring feature set the [ghostMode option](http://www.browsersync.io/docs/options/#option-ghostMode) to false.
