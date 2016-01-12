@@ -1,12 +1,17 @@
 <template>
   <require from="blur-image"></require>
+  <input type="text" name="search" value="" value.bind="searchText & debounce:250" />
+  <button type="submit" click.delegate="updateProducts()" class="btn btn-default">Search
+  </button>
   <section class="au-animate">
     <h2>${heading}</h2>
     <div class="row au-stagger">
       <div class="col-sm-6 col-md-3 card-container au-animate" repeat.for="product of products">
         <div class="card">
+          <!--
           <canvas class="header-bg" width="250" height="70" blur-image.bind="image"></canvas>
-          <div class="avatar">
+          -->
+          <div>
             <img src.bind="product.picture_thumbnail_url" crossorigin ref="image"/>
           </div>
           <div class="content">
