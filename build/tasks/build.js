@@ -9,6 +9,10 @@ var notify = require("gulp-notify");
 var typescript = require('gulp-typescript');
 var tsc = require('typescript');
 
+var autoprefixer = require('gulp-autoprefixer');
+var sass = require('gulp-sass');
+
+
 var tsProject = typescript.createProject('./tsconfig.json', { typescript: tsc });
 
 // transpiles changed es6 files to SystemJS format
@@ -36,6 +40,10 @@ gulp.task('build-html', function() {
 gulp.task('build-css', function() {
   return gulp.src(paths.css)
     .pipe(changed(paths.output, {extension: '.css'}))
+    .pipe(autoprefixer({
+			browsers: ['last 2 versions'],
+			cascade: false
+		}))    
     .pipe(gulp.dest(paths.output));
 });
 
