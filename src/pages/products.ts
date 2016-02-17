@@ -1,7 +1,9 @@
 import {autoinject} from 'aurelia-framework';
 import {BindingEngine} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
 import 'fetch';
+import {HttpClient} from 'aurelia-fetch-client';
+import {CatalogService} from './catalog-service';
+
 
 @autoinject
 export class Products {
@@ -10,8 +12,11 @@ export class Products {
   requestParams = {};
   searchText = '';
 
-  constructor(private http: HttpClient, private bindingEngine: BindingEngine) {
-    var api_url = 'http://localhost/workspace/openstore/public/api/';
+  constructor(private http: HttpClient, private bindingEngine: BindingEngine, private catalogService: CatalogService) {
+
+
+    /*
+    let api_url = 'http://localhost/workspace/openstore/public/api/';
 
     http.configure(config => {
       config
@@ -19,20 +24,28 @@ export class Products {
         .withBaseUrl(api_url);
     });
     console.log('api_url', api_url);
-
+    */
     this.requestParams = { searchText: 'bar' };
 
     // subscribe
     let subscription = bindingEngine.propertyObserver(this, 'searchText')
       .subscribe((newValue, oldValue) => this.updateProducts());
 
-    // unsubscribe (in destuctor)
+    // unsubscribe (in destructor)
     // subscription.dispose();
   }
 
   updateProducts() {
+    let searchText = this.searchText;
+    this.catalogService.search(searchText).then(response => {
+        //console.log(response);
+        this.products = response.data;
+    });
+  }
 
-    var uri = "productcatalog.json?api_key=TEST123-TEST456-TEST789&language=en&pricelist=BE&limit=100&query=" + this.searchText;
+  updateProductsOld() {
+
+    var uri = "productcatalog.json?api_key=TEST123-TEST456-TEST789&language=en&disable_packaging=true&pricelist=BE&limit=100&query=" + this.searchText;
 
     return this.http.fetch(uri,
       {

@@ -12,7 +12,7 @@
           <canvas class="header-bg" width="250" height="70" blur-image.bind="image"></canvas>
           -->
           <div>
-            <img src.bind="product.picture_thumbnail_url" crossorigin ref="image"/>
+            <img src.one-way="product.picture_thumbnail_url || 'http://static.emdmusic.com/images/brands/00/auth2/STAG.jpg'" ref="image"/>
           </div>
           <div class="content">
             <p class="name">${product.product_reference}</p>
