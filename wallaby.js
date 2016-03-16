@@ -1,4 +1,3 @@
-
 module.exports = function (wallaby) {
 
   return {
@@ -7,8 +6,8 @@ module.exports = function (wallaby) {
       {pattern: 'jspm_packages/system.js', instrument: false},
       {pattern: 'config.js', instrument: false},
 
-      {pattern: 'src/**/*.ts', load: false}
-
+      {pattern: 'src/**/*.ts', load: false},
+      {pattern: 'test/unit/setup.ts', load: false}
     ],
 
     tests: [
@@ -25,22 +24,8 @@ module.exports = function (wallaby) {
 
       System.config({
         paths: {
-          "*": null,
-          "src/*": "src/*",
-          "typescript": "node_modules/typescript/lib/typescript.js",
-          "systemjs": "node_modules/systemjs/dist/system.js",
-          'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
-          'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js'
-        },
-         packages: {
-          'test/unit': {
-            defaultExtension: 'ts'
-          },
-          'src': {
-            defaultExtension: 'ts'
-          }
-        },
-        transpiler: 'typescript'
+          "*": "*"
+        }
       });
 
       var promises = [];
@@ -48,9 +33,13 @@ module.exports = function (wallaby) {
         promises.push(System['import'](wallaby.tests[i].replace(/\.js$/, '')));
       }
 
-      Promise.all(promises).then(function () {
-        wallaby.start();
-      });
+      System.import('test/unit/setup')
+        .then(function () {
+          return Promise.all(promises);
+        })
+        .then(function () {
+          wallaby.start();
+        }).catch(function (e) {setTimeout(function () { throw e; }, 0); });
     },
 
     debug: false

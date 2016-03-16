@@ -5,7 +5,7 @@ var plumber = require('gulp-plumber');
 var sourcemaps = require('gulp-sourcemaps');
 var paths = require('../paths');
 var assign = Object.assign || require('object.assign');
-var notify = require("gulp-notify");
+var notify = require('gulp-notify');
 var typescript = require('gulp-tsb');
 
 // transpiles changed es6 files to SystemJS format
@@ -21,7 +21,7 @@ gulp.task('build-system', function() {
     .pipe(plumber())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(typescriptCompiler())
-    .pipe(sourcemaps.write({includeContent: true}))
+    .pipe(sourcemaps.write({includeContent: false, sourceRoot: '/src'}))
     .pipe(gulp.dest(paths.output));
 });
 
